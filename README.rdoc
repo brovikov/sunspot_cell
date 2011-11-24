@@ -1,9 +1,8 @@
-= Sunspot Cell
+= Sunspot Cell (gem)
 
 == Note by Zheileman
 
 * This gem exists because the only gem I could find for the original project (https://github.com/springbok/sunspot_cell) was the one packaged by Kevin Motschiedler (https://github.com/motske/sunspot_cell) and it lacks the support to deal with S3 included in this other fork: https://github.com/chebyte/sunspot_cell
-I've included other paths as well, and bugfixes I found useful from other forks.
 
 
 This gem adds Cell support (for indexing rich documents like pdf, docs, html, etc...) to Sunspot (developed against Sunspot 1.2.1).
