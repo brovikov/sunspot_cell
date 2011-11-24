@@ -1,11 +1,20 @@
 = Sunspot Cell
 
-This plugin adds Cell support (for indexing rich documents) to Sunspot (developed against Sunspot 1.2.1).
+== Note by Zheileman
+
+* This gem exists because the only gem I could find for the original project (https://github.com/springbok/sunspot_cell) was the one packaged by Kevin Motschiedler (https://github.com/motske/sunspot_cell) and it lacks the support to deal with S3 included in this other fork: https://github.com/chebyte/sunspot_cell
+I've included other paths as well, and bugfixes I found useful from other forks.
+
+
+This gem adds Cell support (for indexing rich documents like pdf, docs, html, etc...) to Sunspot (developed against Sunspot 1.2.1).
+Support Paperclip and S3 Storage
 
 The code is based on the patch included here:
 http://outoftime.lighthouseapp.com/projects/20339/tickets/98-solr-cell
 
 == Requirements
+
+* Sunspot gem installed
 
 * Solr Cell libraries (+dist/apache-solr-cell-1.4.X.jar+ and +contrib/extraction/lib/*.jar+ from the standard Solr distribution) placed in the +/solr/lib+ directory as created by the Sunspot gem, in development environment. Your production setup might vary.
 
@@ -18,33 +27,34 @@ and
 	<dynamicField name="*_attachment" stored="true" type="text" multiValued="true" indexed="true"/>
 	<dynamicField name="ignored_*" type="ignored"/>
 
-== Note
+=== Install Plugin
 
-This version assumes the attachment attribute has method +.data+, that returns contents of the attachment.
+Add sunspot gem and sunspot_cell to Gemfile:
+ 
+ gem 'sunspot_rails', '~> 1.2.1'
+ gem 'sunspot_cell', :git => 'git://github.com/zheileman/sunspot_cell.git'
 
 == Usage
 
-In your searchable block within your model add the document content attribute as an "attachment" type:
-
-  searchable do
-    attachment :document_attachment
-    ...
+  class Doc
+    searchable do
+       text :title
+       attachment :file
+     end
   end
 
-The plugin will expect a method to be defined that matches the name of the attachment attribute in our example it would be "document_attachment", e.g.
+== Paperclip & S3 Storage
 
-  def document_attachment
-    File.read(fname) # Reading contents from a file, you can also supply the contents direct from a DB field
+  require 'open-uri'
+
+  class Doc
+    searchable do
+       text :title
+       attachment :attached_file
+     end
+
+  private
+    def attached_file
+      URI.parse(remote_full_url)
+    end
   end
-
-== Todo
-
-* Tests
-
-== Note on Patches/Pull Requests
-
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a future version unintentionally.
-* Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.

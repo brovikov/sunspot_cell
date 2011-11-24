@@ -23,8 +23,7 @@ module Sunspot
 
       @fields.each do |f|
         if f.name.to_s.include?("_attachment") and f.value.present?
-          # It is assumed that f.value contains the document data NOT a link to a file
-          data = f.value
+          data = open(f.value).read rescue ""
           params['fmap.content'] = f.name
         else
           param_name = "literal.#{f.name.to_s}"
