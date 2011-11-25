@@ -5,7 +5,7 @@ module Sunspot
 
     def contains_attachment?
       @fields.each do |field|
-        if field.name.to_s.include?("_attachment")
+        if field.name.to_s.include?("_attachment") && field.value.present?
           return true
         end
       end
