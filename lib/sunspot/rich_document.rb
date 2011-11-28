@@ -35,7 +35,12 @@ module Sunspot
         end
       end
 
-      connection.send_and_receive('update/extract', {:method => :post, :params => params.merge({:commit => true}), :data => data})
+      connection.send_and_receive('update/extract', 
+        { :method => :post, 
+          :params => params.merge({:commit => true}), 
+          :data => data}, 
+          :headers => {"Content-Type" => ""}
+        })
     end
   end
 end
