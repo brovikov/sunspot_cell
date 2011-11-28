@@ -1,6 +1,6 @@
 module Sunspot
 
-  class RichDocument < RSolr::Message::Document
+  class RichDocument < RSolr::Xml::Document
     include Enumerable
 
     def contains_attachment?
@@ -35,7 +35,7 @@ module Sunspot
         end
       end
 
-      connection.send('update/extract', params, data)
+      connection.send_and_receive('update/extract', {:method => :post, :params => params.merge({:commit => true}), :data => data})
     end
   end
 end
