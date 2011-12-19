@@ -37,8 +37,7 @@ module Sunspot
         { :method => :post, 
           :params => params, 
           :data => data, 
-          :headers => {"Content-Type" => ""}, 
-          :read_timeout => 15 # RSolr patched with: https://github.com/mwmitchell/rsolr/commit/38b5b69a0d63cdf85560806c06f3187ea4339f5a
+          :headers => {"Content-Type" => ""}
         })
     end
   end
