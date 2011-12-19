@@ -2,6 +2,9 @@
 
 == Note by Zheileman
 
+* IMPORTANT: Version 1.0.3 has a change to support this read_timeout RSolr patch:
+https://github.com/mwmitchell/rsolr/commit/38b5b69a0d63cdf85560806c06f3187ea4339f5a
+
 * This gem exists because the only gem I could find for the original project (https://github.com/springbok/sunspot_cell) was the one packaged by Kevin Motschiedler (https://github.com/motske/sunspot_cell) and it lacks the support to deal with S3 included in this other fork: https://github.com/chebyte/sunspot_cell
 
 
