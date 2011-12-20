@@ -21,8 +21,13 @@ module Sunspot
 
       @fields.each do |f|
         if f.name.to_s.include?("_attachment") and f.value.present?
-          data = open(f.value).read rescue ""
           params['fmap.content'] = f.name
+          if f.value.is_a?(Hash)
+            params['stream.url']         = f.value[:file]
+            params['stream.contentType'] = f.value[:type]
+          else
+            data = open(f.value).read rescue ""
+          end
         else
           param_name = "literal.#{f.name.to_s}"
           params[param_name] = [] unless params.has_key?(param_name)
