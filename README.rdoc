@@ -13,6 +13,9 @@ http://outoftime.lighthouseapp.com/projects/20339/tickets/98-solr-cell
 
 == Requirements
 
+Thanks to Chris Powell, there is now a cook-book style blog post for getting a Rails 3.2 app properly index rich documents using this gem:
+http://cbpowell.wordpress.com/2012/09/18/indexing-rich-documents-with-rails-sunspot-solr-sunspot-cell-and-carrierwave-cookbook-style/
+
 * Sunspot gem installed (>= 1.3.0)
 
 * Solr Cell libraries (+dist/apache-solr-cell-1.4.X.jar+ and +contrib/extraction/lib/*.jar+ from the standard Solr distribution) placed in the +/solr/lib+ directory as created by the Sunspot gem, in development environment. Your production setup might vary.
