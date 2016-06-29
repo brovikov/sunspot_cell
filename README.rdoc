@@ -1,24 +1,29 @@
 = Sunspot Cell (gem)
 
-== Note by Zheileman
+== Note by Brovikov 
 
-* This gem exists because the only gem I could find for the original project (https://github.com/springbok/sunspot_cell) was the one packaged by Kevin Motschiedler (https://github.com/motske/sunspot_cell) and it lacks the support to deal with S3 included in this other fork: https://github.com/chebyte/sunspot_cell
+* This gem exists because the only gem I could find for the original projects (https://github.com/springbok/sunspot_cell and https://github.com/zheileman/sunspot_cell) was outdated both
 
 
-This gem adds Cell support (for indexing rich documents like pdf, docs, html, etc...) to Sunspot (developed against Sunspot 1.3.0).
-Support Paperclip and S3 Storage
+This gem adds Cell support (for indexing rich documents like pdf, docs, html, etc...) to Sunspot (compartible with Sunspot 2.5.5).
+Support Paperclip or Carrierwave, S3 Storage or local files
 
 The code is based on the patch included here:
-http://outoftime.lighthouseapp.com/projects/20339/tickets/98-solr-cell
+https://github.com/zheileman/sunspot_cell
 
 == Requirements
 
 Thanks to Chris Powell, there is now a cook-book style blog post for getting a Rails 3.2 app properly index rich documents using this gem:
 http://cbpowell.wordpress.com/2012/09/18/indexing-rich-documents-with-rails-sunspot-solr-sunspot-cell-and-carrierwave-cookbook-style/
 
-* Sunspot gem installed (>= 1.3.0)
+* Sunspot gem installed (>= 2.2.5)
 
-* Solr Cell libraries (+dist/apache-solr-cell-1.4.X.jar+ and +contrib/extraction/lib/*.jar+ from the standard Solr distribution) placed in the +/solr/lib+ directory as created by the Sunspot gem, in development environment. Your production setup might vary.
+* Solr Cell libraries 
+
+Tested with Solr 5.3.1 with Cell librarie solr-cell-5.3.1.jar
+
+
+(+dist/apache-solr-cell-5.3.1.jar+ and +contrib/extraction/lib/*.jar+ from the standard Solr distribution) placed in the +/solr/lib+ directory as created by the Sunspot gem, in development environment. Your production setup might vary.
 
 * Adjustments to the Solr +schema.xml+:
 
@@ -29,12 +34,38 @@ and
 	<dynamicField name="*_attachment" stored="true" type="text" multiValued="true" indexed="true"/>
 	<dynamicField name="ignored_*" type="ignored"/>
 
+* Adjustments to the Solr +solrconfig.xml+:
+
+  Need add requestHandler for /update/extract path:
+
+  <requestHandler name="/update/extract" class="solr.handler.extraction.ExtractingRequestHandler">
+    <lst name="defaults">
+      <str name="fmap.Last-Modified">last_modified</str>
+      <str name="uprefix">ignored_</str>
+    </lst>
+    <!--Optional.  Specify a path to a tika configuration file.  See the Tika docs for details.-->
+    <!-- <str name="tika.config">/my/path/to/tika.config</str> -->
+    <!-- Optional. Specify one or more date formats to parse.  See DateUtil.DEFAULT_DATE_FORMATS for default date formats -->
+    <!--  <lst name="date.formats">
+      <str>yyyy-MM-dd</str>
+    </lst> -->
+  </requestHandler>
+
 === Install Plugin
 
 Add sunspot gem and sunspot_cell to Gemfile:
  
- gem 'sunspot_rails', '~> 1.3.0'
- gem 'sunspot_cell', :git => 'git://github.com/zheileman/sunspot_cell.git'
+ gem 'sunspot'
+ gem 'sunspot_solr', github: 'sunspot/sunspot', branch: 'master'
+ gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master', :require => "sunspot_rails"
+ gem 'sunspot_cell', :git => 'git://github.com/brovikov/sunspot_cell.git'
+ gem 'progress_bar'
+
+Also take a look to nice gem https://github.com/mrcsparker/sunspot_cell_jars. It allow to add all necessary jar files to make sunspot_cells work with apache-solr-cell
+
+But pay attention to tika-core-x.x.jar and tika-parser-x.x.jar files. sunspot_cell_jars includes outdated version for both of them (check this page http://www.java2s.com/Code/Jar/t/tika.htm to find correct version for yours configuration)
+
+I tested Solr 5.3.1 with Cell librarie solr-cell-5.3.1.jar with tika-core-1.3.jar and tika-parser-1.3.jar
 
 == Usage
 
@@ -59,4 +90,3 @@ Add sunspot gem and sunspot_cell to Gemfile:
     def attached_file
       URI.parse(remote_full_url)
     end
-  end
