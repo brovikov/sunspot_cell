@@ -38,18 +38,18 @@ and
 
   Need add requestHandler for /update/extract path:
 
-  <requestHandler name="/update/extract" class="solr.handler.extraction.ExtractingRequestHandler">
-    <lst name="defaults">
-      <str name="fmap.Last-Modified">last_modified</str>
-      <str name="uprefix">ignored_</str>
-    </lst>
-    <!--Optional.  Specify a path to a tika configuration file.  See the Tika docs for details.-->
-    <!-- <str name="tika.config">/my/path/to/tika.config</str> -->
-    <!-- Optional. Specify one or more date formats to parse.  See DateUtil.DEFAULT_DATE_FORMATS for default date formats -->
-    <!--  <lst name="date.formats">
-      <str>yyyy-MM-dd</str>
-    </lst> -->
-  </requestHandler>
+    <requestHandler name="/update/extract" class="solr.handler.extraction.ExtractingRequestHandler">
+      <lst name="defaults">
+        <str name="fmap.Last-Modified">last_modified</str>
+        <str name="uprefix">ignored_</str>
+      </lst>
+      <!--Optional.  Specify a path to a tika configuration file.  See the Tika docs for details.-->
+      <!-- <str name="tika.config">/my/path/to/tika.config</str> -->
+      <!-- Optional. Specify one or more date formats to parse.  See DateUtil.DEFAULT_DATE_FORMATS for default date formats -->
+      <!--  <lst name="date.formats">
+        <str>yyyy-MM-dd</str>
+      </lst> -->
+    </requestHandler>
 
 === Install Plugin
 
