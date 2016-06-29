@@ -32,13 +32,21 @@ module SunspotCell
         end
 
 
-        def document_for(model)
+        def document_for_full_update(model)
           Sunspot::RichDocument.new(
             :id => Sunspot::Adapters::InstanceAdapter.adapt(model).index_id,
             :type => Sunspot::Util.superclasses_for(model.class).map { |clazz| clazz.name }
           )
         end
 
+        def document_for_atomic_update(clazz, id)
+          if Adapters::InstanceAdapter.for(clazz)
+            Sunspot::RichDocument.new(
+                id: Adapters::InstanceAdapter.index_id_for(clazz.name, id),
+                type: Util.superclasses_for(clazz).map(&:name)
+            )
+          end
+        end
       end
     end
   end
