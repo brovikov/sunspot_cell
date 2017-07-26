@@ -1,7 +1,6 @@
 module Sunspot
 
   class RichDocument < RSolr::Xml::Document
-    include Enumerable
 
     def contains_attachment?
       @fields.each do |field|
